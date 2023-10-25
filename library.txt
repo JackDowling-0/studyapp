@@ -1,0 +1,17 @@
+1.  AAA (authentication, authorization, accounting): The services that the directory services provide to all the computers within a company or organization
+2.  Active directory (AD): The Microsoft alternative to directory services that offers customization and added features for the Windows platform
+3.  Active directory users and computers (ADUC): The client tools that are used for accessing and administering a directory server
+4.  Advanced group policy management (AGPM): A set of add-on tools from Microsoft that gives some added provision control abilities in GPMC
+5.  Bind operation: The operation which authenticates clients to the directory server
+6.  Central management: A central service that provides instructions to all of the different parts of my IT infrastructure
+7.  Change management process: The process to notify others in the organization about the changes that you are about to make
+8.  Computer configuration: Contained within a Group Policy Object (GPO)
+9.  Configuration management: The creation of rules about how things should work in your organization, such as printers, configure software, or mounting network file systems
+10.  Default domain control policy: One of the two GPOs that are created when a new Active Directory domain has been made
+11.  Delegation: The administrative tasks that you need to perform a lot as a part of your day to day job but you don't need to have broad access to make changes in AD
+12.  Directory Access Protocol (DAP): A protocol that is included in the X.500 directory standard from 1988
+13.  Directory Information Shadowing Protocol (DISP): A protocol that is included in the X.500 directory standard from 1988
+14.  Directory Operational Bindings Management Protocol (DOBMP): A protocol that is included in the X.500 directory standard from 1988
+15.  Directory server: The server that contains a lookup service that provides mapping between network resources and their network addresses
+16.  Directory services: A lookup service contained in a network server that provides mapping between network resources and their network addresses
+17.  Directory System Protocol (DSP): A protocol that is included in the X.500 directory standard from 1988
