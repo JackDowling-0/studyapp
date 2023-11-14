@@ -1,3 +1,7 @@
+#ifndef FLASHCARDS_H
+#define FLASHCARDS_H
+
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -72,7 +76,7 @@ namespace Flash
 
                     // Check if card number indexes us out of bounds
                     if (cardNumber < 0 || cardNumber > library.size()) {
-                        std::cout << "Error! No flashcard found!" << std::endl;
+                        std::cout << "Error! Flashcard not found!" << std::endl;
 
                     } else {
                         // Create an iterator based on ID number
@@ -95,3 +99,5 @@ namespace Flash
             //TODO - 3. Create update functions of class Flashcard
     };
 }
+
+#endif
