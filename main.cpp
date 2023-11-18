@@ -24,11 +24,7 @@ int main(){
     flashcard.DisplayCards();
 
     //delete card 6...
-    flashcard.Destroy(6);
-    flashcard.Destroy(3);
-    flashcard.Destroy(3);
-
-    std::cout << "\n Destroying card 6... \n" << std::endl;
+    flashcard.UpdateCard(4, "this is some text", "this is some other text");
 
     //we should have 9 cards now...
     flashcard.DisplayCards();

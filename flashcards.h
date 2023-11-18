@@ -14,6 +14,10 @@ namespace Flash
     class Flashcard
     {
 
+	public:
+		//library to hold flash cards
+		std::vector<Flashcard> library;
+
         private:
         // Attributes
             int ID;
@@ -33,8 +37,13 @@ namespace Flash
         
         // Public attributes
         public:
-            // public library to hold all flashcards currently in memory
-            std::vector<Flashcard> library;
+
+	    bool ValidID = [&](int cardNumber) -> bool {
+		    if (cardNumber > 0 && cardNumber <= library.size() + 1){
+			    return true;
+		    }
+		    return false;
+	    };
 
             void Create(int num, std::string quest, std::string ans) 
             {
@@ -97,6 +106,25 @@ namespace Flash
                     }
             }
             //TODO - 3. Create update functions of class Flashcard
+	    void UpdateCard(int cardNumber, std::string newQuestion, std::string newAnswer){
+		    if (cardNumber < 0 || cardNumber > library.size()) {
+			    std::cout << "Error! Flashcard not found!" << std::endl;
+	    } else {
+
+		    //create an iterator
+		    auto &card = library.at(cardNumber + 1);
+
+		    if (newQuestion != "") {
+			    card.question = newQuestion;
+		    }
+
+		    if (newAnswer != "") {
+			    card.answer = newAnswer;
+		    }
+
+		    DisplayCard(cardNumber);
+	    	}
+	    }
     };
 }
 
