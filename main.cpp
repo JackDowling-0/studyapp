@@ -5,29 +5,32 @@
 
 #include <iostream>
 #include <vector>
+#include <conio.h>
 
 #include "flashcards.h"
 
 int main(){
 
-    std::vector<Flash::Flashcard> library;
 
     Flash::Flashcard flashcard;
 
 
     //generate 10 flash cards
-    for (size_t i = 1; i <= 10; i++) {
+    for (int i = 0; i <= 10; i++) {
         flashcard.Create(i, "someQuestion", "someAnswer");
     }
 
-
     flashcard.DisplayCards();
 
-    //delete card 6...
-    flashcard.UpdateCard(4, "this is some text", "this is some other text");
+    std::cout << "\n";
 
-    //we should have 9 cards now...
-    flashcard.DisplayCards();
+    for (int i = 0; i <= 10; i = i + 2) {
+        flashcard.UpdateCard(i, "someotherText", "someTest", true);
+    }
+
+    std::cout <<"\n";
     
+    getch();
+
     return 0;
 }

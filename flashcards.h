@@ -28,7 +28,7 @@ namespace Flash
         
         // Methods
             void updateID(int startingIndex) {
-                int i = startingIndex + 1;
+                int i = startingIndex;
                 for (auto it = library.begin() + startingIndex; it != library.end(); it++) {
                     it->ID = i;
                     i++;
@@ -37,13 +37,6 @@ namespace Flash
         
         // Public attributes
         public:
-
-	    bool ValidID = [&](int cardNumber) -> bool {
-		    if (cardNumber > 0 && cardNumber <= library.size() + 1){
-			    return true;
-		    }
-		    return false;
-	    };
 
             void Create(int num, std::string quest, std::string ans) 
             {
@@ -69,7 +62,7 @@ namespace Flash
 
             void Destroy(int cardNumber) {
                 //TO DO: CREATE ANONYMOUS FUNCTION
-                if (cardNumber < 1 || cardNumber > library.size()) {
+                if (cardNumber < 0 || cardNumber > library.size()) {
                     std::cout << "Error! Card number out of bounds!" << std::endl;
 
                 } else {
@@ -88,41 +81,46 @@ namespace Flash
                         std::cout << "Error! Flashcard not found!" << std::endl;
 
                     } else {
+
                         // Create an iterator based on ID number
                         const auto &card = library.at(cardNumber);
 
-                        // Check to see if we've deleted the flashcard
-                        if (card.ID == '\0') {
-                            std::cout << "Error! Flashcard not found!" << std::endl;
+                        // Print flashcard with elements
+                        std::cout << "Printing flashcard...\n";
 
-                        } else {
-                            // Print flashcard with elements
-                            std::cout << "Printing flashcard...\n";
-
-                            std::cout << "Card ID: " << card.ID << "." << std::endl;
-                            std::cout << "Question: " << card.question << std::endl;
-                            std::cout << "Answer: " << card.answer << std::endl;
+                        std::cout << "Card ID: " << card.ID << "." << std::endl;
+                        std::cout << "Question: " << card.question << std::endl;
+                        std::cout << "Answer: " << card.answer << std::endl;
                         }
-                    }
             }
-            //TODO - 3. Create update functions of class Flashcard
-	    void UpdateCard(int cardNumber, std::string newQuestion, std::string newAnswer){
+
+	    void UpdateCard(int cardNumber, std::string newQuestion = "//EMPTY//", std::string newAnswer = "//EMPTY//", bool print = false){
+
 		    if (cardNumber < 0 || cardNumber > library.size()) {
+
 			    std::cout << "Error! Flashcard not found!" << std::endl;
-	    } else {
 
-		    //create an iterator
-		    auto &card = library.at(cardNumber + 1);
+            } else if (newQuestion == "//EMPTY//" && newAnswer == "//EMPTY//") {
+            
+                std::cout << "Error! Must provide either question or answer!" << std::endl;    
 
-		    if (newQuestion != "") {
-			    card.question = newQuestion;
-		    }
+            } else {
 
-		    if (newAnswer != "") {
-			    card.answer = newAnswer;
-		    }
+                //create an iterator
+                auto &card = library.at(cardNumber);
 
-		    DisplayCard(cardNumber);
+                if (newQuestion != "") {
+                    card.question = newQuestion;
+                }
+
+                if (newAnswer != "") {
+                    card.answer = newAnswer;
+                }
+
+                if (print != false) {
+                    DisplayCard(cardNumber);
+                }
+
 	    	}
 	    }
     };
