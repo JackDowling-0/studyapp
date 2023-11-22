@@ -18,26 +18,26 @@ namespace Flash
 		//library to hold flash cards
 		std::vector<Flashcard> library;
 
-        private:
-        // Attributes
-            int ID;
+    private:
+    // Attributes
+        int ID;
 
-            std::string question;
-            std::string answer;
+        std::string question;
+        std::string answer;
+    
         
-        
-        // Methods
-            void updateID(int startingIndex) {
-                int i = startingIndex;
-                for (auto it = library.begin() + startingIndex; it != library.end(); it++) {
-                    it->ID = i;
-                    i++;
-                }
+    // Methods //TODO:: Why is this private?
+        void updateID(int startingIndex) {
+            int i = startingIndex;
+            for (auto it = library.begin() + startingIndex; it != library.end(); it++) {
+                it->ID = i;
+                i++;
             }
+        }
         
         // Public attributes
         public:
-
+            //TODO: make quest and ans optional
             void Create(int num, std::string quest, std::string ans) 
             {
                 Flashcard flashcard;
