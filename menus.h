@@ -2,8 +2,6 @@
 #define MENUS_H
 
 #include <map>
-#include <functional>
-#include <typeinfo>
 
 //forward declaration
 class Menu;
