@@ -1,9 +1,6 @@
 #ifndef FLASHCARDS_H
 #define FLASHCARDS_H
 
-
-
-
 namespace Flash 
 {
 
