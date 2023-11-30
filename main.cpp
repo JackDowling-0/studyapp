@@ -1,38 +1,58 @@
 #include <iostream>
 #include <vector>
-#include <conio.h>
 
 #include "flashcards.h"
 #include "menus.h"
  
 // instantiate menus
+Menu mainMenu("Main Menu");
+Menu flashcardCreator("Flashcard Creator");
+Menu flashcardRemover("Flashcard Remover");
+Menu flashcardUpdater("Flashcard Updator");
+Menu addLine("Add Line");
 
+/*
+example function to show menu traversal
+function will initialize a pointer to the top level menu, add sub menus, 
+and display the current menu at each step of the way
+*/
+void exampleTraversal(){
 
+        //Initialize pointer to top level menu
+        Menu* currMenu = &mainMenu; // 0x7ff73fc99040
+        currMenu->displayMenu(); 
 
-int runInitialSetup(){
+        //add sub menu
+        currMenu->addMenu(&flashcardCreator);
 
-    Menu MainMenu("Main Menu");
-    Menu subMenu_1("sub menu 1");
-    Menu subMenu_2("sub menu 2");
+        //add second sub menu option
+        currMenu->addMenu(&flashcardRemover);
 
-    MainMenu.addOption("option 1", subMenu_1);
-    MainMenu.addOption("option 2", subMenu_2);
+        //enter sub menus
+        currMenu = currMenu->subMenu(currMenu); // 0x7ff73fc990a0
 
-    
-    MainMenu.addFunction("Say Cheese", []() {
-        std::cout << "CHeeeeese!" << std::endl;
-    });
-    MainMenu.executeFunction("Say Cheese");
+        currMenu->displayMenu();
 
-    MainMenu.displayMenu();
+        currMenu->addMenu(&addLine);
 
-    //no issues
-    return 0;
+        //enter next sub menu
+        currMenu = currMenu->subMenu(currMenu); // 0x7ff646e391c0 // deepest menu
+
+        currMenu->displayMenu();
+        
+        //return pointer to previous menu
+        currMenu = currMenu->getPrevMenu(); // 0x7ff646e390a0
+
+        currMenu->displayMenu();
+
+        currMenu = currMenu->getPrevMenu(); // 0x7ff646e39040
+        currMenu->displayMenu();
 }
 
 int main(){
 
-    runInitialSetup();
+    exampleTraversal();
 
+    
     return 0;
 }
