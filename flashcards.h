@@ -1,16 +1,18 @@
 #ifndef FLASHCARDS_H
 #define FLASHCARDS_H
 
-
-
-
 namespace Flash 
 {
+
+//public var for anything in the Flash namespace; tracks stack size
+int nextID;
+
 
 //flashcard container
 class Flashcard {
     public:
         struct FlashcardInfo {
+            FlashcardInfo(int ID = 0, std::string question = "", std::string answer = "") : ID(ID), question(question), answer(answer){};
             int ID;
             std::string question;
             std::string answer;
@@ -30,7 +32,7 @@ class Flashcard {
         //Update the attributes of the current flashcard
         void updateElement(std::string q = "", std::string a = "") {
 
-            if (q != "") {
+            if (q != "" && q != "//leave//") {
                 question = q;
             }
 
@@ -57,11 +59,18 @@ class FlashcardManager
 // Public attributes
 public:
     std::map<int, Flashcard> flashcards;
-    int nextID;
+
 
     //construct and add flashcards to the stack based on provided information
-    void addFlashcard(int ID, std::string question = "", std::string answer = ""){
+    void addFlashcard(int ID = nextID, std::string question = "", std::string answer = ""){
         flashcards.emplace(ID, Flashcard(ID, question, answer));
+        nextID++;
+    }
+
+    //Flashcard overload
+    void addFlashcard(const Flashcard& card){
+        flashcards.emplace(nextID, card);
+        nextID++;
     }
 
     //creates buffer library vector, pushes cards in based on IDs, then destroys and remakes existing library
@@ -131,7 +140,7 @@ public:
     void updateCard(const int& cardNumber, std::string newQuestion = "", std::string newAnswer = "", bool print = false){
 
         if (flashcards.find(cardNumber) != flashcards.end()){
-            if (newQuestion != "" && newAnswer != ""){
+            if (newQuestion != "" || newAnswer != ""){
 
                 //create an iterator
                 auto &card = flashcards.at(cardNumber);
