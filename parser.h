@@ -8,7 +8,10 @@ namespace Flash{
     class Parser {
         public:
 
+            Parser(FlashcardManager& manager) : manager(manager){}
+
             std::string currLine;
+            FlashcardManager* ptr;
 
             bool isLetter(int letter){
                 if (letter >= 65 && letter <= 90){
@@ -47,6 +50,27 @@ namespace Flash{
 
                 return card;
             }
+
+            //reads lines into the program, converting one line at a time
+            void parseFile(const std::string& fileName){
+                //open file
+                std::ifstream targetFile(fileName);
+
+                //read each line into a flashcard
+                std::string rawLine;
+
+                while (std::getline (targetFile, rawLine)){
+                    //ignore empty lines
+                    if (rawLine != ""){
+                        manager.addFlashcard(parseLine(rawLine));
+                    }
+                }
+
+                targetFile.close();
+            }
+
+        private:
+            FlashcardManager& manager;
 
     };
 }
