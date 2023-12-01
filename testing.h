@@ -1,8 +1,6 @@
 #ifndef TESTING_H
 #define TESTING_H
 
-#include "flashcards.h"
-
 class Test {
 
     public:
@@ -74,7 +72,7 @@ class Test {
 
                 void SingleBuildTest(){
                     Flash::FlashcardManager manager;
-                    Flash::Parser parser;
+                    Flash::Parser parser(manager);
 
                     //Create comparison objects
                     Flash::Flashcard::FlashcardInfo expectedInfoCard1 = Flash::Flashcard::FlashcardInfo(0, "This is a", "line of text");

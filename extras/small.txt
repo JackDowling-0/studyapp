@@ -1,0 +1,15 @@
+AAA (authentication, authorization, accounting): The services that the directory services provide to all the computers within a company or organization
+
+Active directory (AD): The Microsoft alternative to directory services that offers customization and added features for the Windows platform 
+
+Active directory users and computers (ADUC): The client tools that are used for accessing and administering a directory server
+
+Advanced group policy management (AGPM): A set of add-on tools from Microsoft that gives some added provision control abilities in GPMC
+
+Bind operation: The operation which authenticates clients to the directory server
+
+Central management: A central service that provides instructions to all of the different parts of my IT infrastructure
+
+Change management process: The process to notify others in the organization about the changes that you are about to make
+
+Computer configuration: Contained within a Group Policy Object (GPO)

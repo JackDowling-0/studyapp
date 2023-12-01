@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <fstream>
+#include <conio.h>
 
 //Proprietary libraries
 #include "flashcards.h"

@@ -1,6 +1,8 @@
 #ifndef FLASHCARDS_H
 #define FLASHCARDS_H
 
+
+
 namespace Flash 
 {
 
@@ -162,8 +164,48 @@ public:
         }
 
     }
+       
+        void addFlashcards(std::vector<Flashcard> bffr){
+            std::ofstream library("library.txt", std::ios_base::app);
 
+            for (const auto& it : bffr){
+                library << "ID: " << it.getInfo().ID << std::endl;
+                library << "Question: " << it.getInfo().question << std::endl;
+                library << "Answer: " << it.getInfo().answer << std::endl;
+            }
+        }
+
+        void readFromStorage(){
+            std::ifstream library("library.txt");
+            int d;
+            std::string q = "";
+            std::string a = "";
+            std::string line;
+            int counter = 0;
+            Flashcard card;
+            while (std::getline(library, line)){
+                if (counter == 0){
+                    d = stoi(line.substr(4));
+                    counter++;
+                    continue;
+                } else if (counter == 1){
+                    q = line.substr(10);
+                    counter++;
+                    continue;
+                } else if (counter == 2){
+                    a = line.substr(8);
+                    counter = 0;
+                    addFlashcard(nextID, q, a);
+                    continue;
+                }
+            }
+            library.close();
+        }
 };
+
+
+
+//end of Flash namespace
 }
 
 #endif
