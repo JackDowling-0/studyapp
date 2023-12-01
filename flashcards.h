@@ -59,6 +59,11 @@ class FlashcardManager
 // Public attributes
 public:
     std::map<int, Flashcard> flashcards;
+    //init logic
+    FlashcardManager(){
+        //set up next ID
+        nextID = flashcards.size();
+    }
 
 
     //construct and add flashcards to the stack based on provided information
