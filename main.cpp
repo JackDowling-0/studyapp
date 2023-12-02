@@ -1,19 +1,30 @@
 #include "lib.h"
 
+// int init(){
+//     Flash::FlashcardManager manager;
+//     Flash::Parser parser(manager);
+    
+//     loadMenus();
+//     manager.readFromStorage();
+
+// }
+
 int main(){
+
     Flash::FlashcardManager manager;
     Flash::Parser parser(manager);
 
-    std::vector<Flash::Flashcard> cards;
-    for (int i = 0; i < 5; i++){
-        cards.emplace_back(Flash::Flashcard(i, "This is a", "Flash card"));
-    }
+    manager.readFromStorage();
+    manager.displayCards();
 
-    manager.addFlashcards(cards);
+    manager.addFlashcard(Flash::nextID, "My cute boi", "Needs to toot 'cause she's a stinky boi");
 
-    // manager.readFromStorage();
+    std::vector<Flash::Flashcard> vecBffr = manager.convertCards(manager.flashcards);
+    manager.writeLibraryToStorage(vecBffr);
 
-    // manager.displayCards();
+
+
+    
 
     return 0;
 }
