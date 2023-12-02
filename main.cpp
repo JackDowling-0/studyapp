@@ -17,7 +17,7 @@ int main(){
     manager.readFromStorage();
     manager.displayCards();
 
-    manager.addFlashcard(Flash::nextID, "My cute boi", "Needs to toot 'cause she's a stinky boi");
+    manager.addFlashcard(Flash::nextID, "this is a test", "and it worked");
 
     std::vector<Flash::Flashcard> vecBffr = manager.convertCards(manager.flashcards);
     manager.writeLibraryToStorage(vecBffr);
