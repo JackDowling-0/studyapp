@@ -1,12 +1,9 @@
 #include "lib.h"
 
-void INIT_MENU(){
-    Flash::FlashcardManager manager;
-    Flash::Parser parser(manager);
+namespace Flash{
 
-    Menu mainMenu;
+void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMenu, Menu*& currMenu){
 
-    Menu* currMenu = &mainMenu;
 
     currMenu->addMenu(Menu("create", "Create Flashcard", currMenu));
     currMenu->addMenu(Menu("view", "View Flashcards", currMenu));
@@ -14,7 +11,6 @@ void INIT_MENU(){
 
     //move to Menu -> menus (1/3) // currMenu = mainMenu.menus[0]
     currMenu = &currMenu->menus[0];
-    currMenu->displayMenu();
     
     //add function options to create menu
     
@@ -61,21 +57,26 @@ void INIT_MENU(){
 
     //"VIEW" MENU
     currMenu = &mainMenu.menus[1];
-    currMenu->displayMenu();
 
         //initialize subMenus
 
+        //single menu
         currMenu->addMenu(Menu("single", "Inspect a flashcard", currMenu));
         currMenu = &currMenu->menus[0];
 
-        currMenu->displayMenu();
+        currMenu->addMenu(Menu("edit", "Edit this flashcard.", currMenu->getPrevMenu()));
 
-    // //"PRACTICE" MENU
-    // currMenu = &mainMenu.menus[2];
-    // currMenu->displayMenu();
+    //"PRACTICE" MENU
+    currMenu = &mainMenu.menus[2];
 
-    currMenu = currMenu->getPrevMenu();
-    currMenu->displayMenu();
+        //initialize subMenus
+        currMenu->addMenu(Menu("rotate", "Rotate through cards", currMenu));
+        currMenu->addMenu(Menu("multi", "Select multiple cards to practice.", currMenu));
+        currMenu->addMenu(Menu("range", "Practice from a range of cards.", currMenu));
 
 
+
+
+
+}
 }
