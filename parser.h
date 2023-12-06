@@ -10,7 +10,10 @@ namespace Flash{
 
             Parser(FlashcardManager& manager) : manager(manager){}
 
+            Parser(FlashcardManager& manager) : manager(manager){}
+
             std::string currLine;
+            FlashcardManager* ptr;
             FlashcardManager* ptr;
 
             bool isLetter(int letter){
