@@ -237,8 +237,28 @@ public:
 
         return vecBffr;
     }
-};
 
+    int practiceCard(int num){
+
+        const auto& card = flashcards.at(num);
+
+        std::cout << "(" << card.getInfo().ID << ") " << card.getInfo().question;
+        char c = getch();
+        if (c == 'q'){
+            return(1);
+        }
+        fflush(stdin);
+
+        std::cout << "      " << card.getInfo().answer << "\n";
+        c = getch();
+        if (c == 'q'){
+            return(1);
+        }
+        fflush(stdin);
+
+        return 0;
+    }
+};
 
 
 //end of Flash namespace

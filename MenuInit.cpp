@@ -1,12 +1,12 @@
 #include "lib.h"
 
-// //add function options to create menu
-//     currMenu->addAction({"name",
-//     "description",
-//         std::function<void(std::string)>([&manager, &parser](std::string s = ""){
-//             //function logic
+// //function template
+// currMenu->addAction({"name",
+// "description",
+//     std::function<void(std::string)>([&manager, &parser](std::string s = ""){
+//         //function logic
 
-//         })});
+//     })});
 
 namespace Flash{
 
@@ -159,27 +159,101 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
 
                 std::cout << "Press any key to continue, 'q' to quit back to main menu." << std::endl;
                 for (const auto& card : manager.flashcards){
-                    std::cout << "(" << card.first << ") " << card.second.getInfo().question;
-                    char c = getch();
-                    if (c == 'q'){
-                        break;
-                    }
-                    fflush(stdin);
-
-
-                    std::cout << "      " << card.second.getInfo().answer << "\n";
-                    c = getch();
-                    if (c == 'q'){
-                        break;
-                    }
-                    fflush(stdin);
+                    if (manager.practiceCard(card.first) == 1){break;}
                 }
                 currMenu = &mainMenu;
 
 
             })});
 
-        currMenu->addMenu(Menu("multi", "Select multiple cards to practice.", currMenu));
+        currMenu->addAction({"multiSelect",
+        "Select from a set of flashcards to practice",
+            std::function<void(std::string)>([&manager, &parser](std::string s = ""){
+                //function logic
+                std::string input;
+                getline(std::cin, input);
+                std::stringstream ss(input);
+
+                std::vector<std::string> v;
+                std::vector<int> practiceBffr;
+                
+                //seperate given line into digits and push them into a temporary vector
+                while (getline(ss, s, ' ')) {
+                    v.push_back(s);
+                }
+
+                //iterate over string, converting it to a number and pushing valid ones into another vector
+                for (const auto& str : v){
+                    //prevent stoi exceptions
+                    bool skip = false;
+                    for (const auto& ltr : str){
+                        if (!isdigit(ltr)){ skip = true; break;}
+                    }
+                    if (!skip){
+                        practiceBffr.push_back(stoi(str));
+                    }
+                }
+
+                //keep looping over cards until told to stop
+                while (true){
+                    for (const auto& str : practiceBffr){
+                        if (manager.flashcards.count(str)){
+                            //return back to main if we receive signal 1(q pressed)
+                            if (manager.practiceCard(manager.flashcards.at(str).getInfo().ID) == 1) {return;}
+                        }
+                    }
+                }
+
+            })});
+
+        currMenu->addAction({"rangeSelect",
+        "Select from a range of flashcards to practice",
+            std::function<void(std::string)>([&manager, &parser, &currMenu, &mainMenu](std::string s = ""){
+                //function logic
+                std::string min, max;
+
+                //loop until user provides us with a valid range or presses q
+
+                [&]{
+                    loop:
+                while (true){
+
+                    std::cout << "Enter lower range: ";
+                    getline(std::cin, min);
+                    if (min.empty()){ continue;} else if (min == "q"){return;}
+
+                    std::cout << "Enter upper range: ";
+                    getline(std::cin, max);
+                    if (max.empty()){ continue;} else if (max == "q"){return;}
+                    std::cout << max;
+
+                    for (const char& c : min){
+                        if (!isdigit(c)){
+                            if (c == 'q'){return;}
+                            std::cout << "Invalid input. Please provide a number and a range. \n";
+                            continue;
+                        }
+                    }
+                    break;
+                }
+
+                while (true){
+                    std::vector<int> nums = {stoi(min), stoi(max)};
+                    
+                    for (const int& num : nums){
+                        //see if either of our numbers are out of range
+                        if (!manager.flashcards.count(nums[0]) || !manager.flashcards.count(nums[1])){
+                            std::cout << "Cards out of range. Please try again.\n";
+                            goto loop;
+                        }
+                        if (manager.practiceCard(num) == 1) {return;}
+                    }
+                }
+                }();
+                
+            currMenu = &mainMenu;
+            })});
+
         currMenu->addMenu(Menu("range", "Practice from a range of cards.", currMenu));
 
     currMenu = &mainMenu;
