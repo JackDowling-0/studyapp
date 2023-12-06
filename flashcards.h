@@ -3,6 +3,8 @@
 
 
 
+
+
 namespace Flash 
 {
 
@@ -66,6 +68,11 @@ public:
         //set up next ID
         nextID = flashcards.size();
     }
+    //init logic
+    FlashcardManager(){
+        //set up next ID
+        nextID = flashcards.size();
+    }
 
 
     //construct and add flashcards to the stack based on provided information
@@ -111,6 +118,17 @@ public:
 
             std::cout << "Error! Flashcard not found!" << std::endl;
             }
+        }
+
+    //display specified flashcard
+    void displayCard(const Flashcard& card) {
+
+            Flashcard::FlashcardInfo info = card.getInfo();
+            
+            std::cout << "Card ID: " << info.ID << "." << std::endl;
+            std::cout << "Question: " << info.question << std::endl;
+            std::cout << "Answer: " << info.answer << std::endl;
+
         }
 
     //display all flashcards currently on the stack
@@ -164,45 +182,90 @@ public:
         }
 
     }
-       
-        void addFlashcards(std::vector<Flashcard> bffr){
-            std::ofstream library("library.txt", std::ios_base::app);
+    void appendCardToStorage(Flashcard card){
+        std::ofstream library("library.txt", std::ios_base::app);
 
-            for (const auto& it : bffr){
-                library << "ID: " << it.getInfo().ID << std::endl;
-                library << "Question: " << it.getInfo().question << std::endl;
-                library << "Answer: " << it.getInfo().answer << std::endl;
-            }
+        library << "ID: " << card.getInfo().ID << std::endl;
+        library << "Question: " << card.getInfo().question << std::endl;
+        library << "Answer: " << card.getInfo().answer << std::endl;
+        
+        library.close();
+    }
+
+    void writeLibraryToStorage(){
+        std::vector<Flashcard> bffr;
+        for (const auto& it : flashcards){
+            bffr.push_back(it.second);
         }
 
-        void readFromStorage(){
-            std::ifstream library("library.txt");
-            int d;
-            std::string q = "";
-            std::string a = "";
-            std::string line;
-            int counter = 0;
-            Flashcard card;
-            while (std::getline(library, line)){
-                if (counter == 0){
-                    d = stoi(line.substr(4));
-                    counter++;
-                    continue;
-                } else if (counter == 1){
-                    q = line.substr(10);
-                    counter++;
-                    continue;
-                } else if (counter == 2){
-                    a = line.substr(8);
-                    counter = 0;
-                    addFlashcard(nextID, q, a);
-                    continue;
-                }
-            }
-            library.close();
+        std::ofstream library("library.txt", std::ios::out);
+
+        for (const auto& it : bffr){
+            library << "ID: " << it.getInfo().ID << std::endl;
+            library << "Question: " << it.getInfo().question << std::endl;
+            library << "Answer: " << it.getInfo().answer << std::endl;
         }
+        library.close();
+    }
+
+    void readFromStorage(){
+        std::ifstream library("library.txt");
+        int d;
+        std::string q = "";
+        std::string a = "";
+        std::string line;
+        int counter = 0;
+        Flashcard card;
+        while (std::getline(library, line)){
+            if (counter == 0){
+                d = stoi(line.substr(4));
+                counter++;
+                continue;
+            } else if (counter == 1){
+                q = line.substr(10);
+                counter++;
+                continue;
+            } else if (counter == 2){
+                a = line.substr(8);
+                counter = 0;
+                addFlashcard(nextID, q, a);
+                continue;
+            }
+        }
+        
+        library.close();
+    }
+
+    const std::vector<Flashcard> convertCards(const std::map<int, Flashcard>& flashcards) {
+        std::vector<Flashcard> vecBffr;
+        for (const auto& it : flashcards){
+            vecBffr.emplace_back(it.second.getInfo().ID, it.second.getInfo().question, it.second.getInfo().answer);
+        }
+
+        return vecBffr;
+    }
+
+    int practiceCard(int num){
+
+        const auto& card = flashcards.at(num);
+
+        std::cout << "(" << card.getInfo().ID << ") " << card.getInfo().question;
+        char c = getch();
+        if (c == 'q'){
+            return(1);
+        }
+        fflush(stdin);
+
+        std::cout << "      " << card.getInfo().answer << "\n";
+        c = getch();
+        if (c == 'q'){
+            return(1);
+        }
+        fflush(stdin);
+
+        return 0;
+    }
 };
-
 
 
 //end of Flash namespace
