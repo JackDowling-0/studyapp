@@ -83,9 +83,11 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                     
                     std::cout << "Input a question: \n";
                     std::getline(std::cin, q);
+                    if (q == "q"){return;}
 
                     std::cout << "Input an answer: \n";
                     std::getline(std::cin, a);
+                    if (a == "q"){return;}
 
                     if (q == "" || a == ""){
                         break;

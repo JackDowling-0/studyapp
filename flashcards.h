@@ -3,8 +3,6 @@
 
 
 
-
-
 namespace Flash 
 {
 
@@ -63,11 +61,6 @@ class FlashcardManager
 // Public attributes
 public:
     std::map<int, Flashcard> flashcards;
-    //init logic
-    FlashcardManager(){
-        //set up next ID
-        nextID = flashcards.size();
-    }
     //init logic
     FlashcardManager(){
         //set up next ID
