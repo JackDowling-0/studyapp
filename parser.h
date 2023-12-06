@@ -53,6 +53,7 @@ namespace Flash{
 
             //reads lines into the program, converting one line at a time
             void parseFile(const std::string& fileName){
+                
                 //open file
                 std::ifstream targetFile(fileName);
 
@@ -67,6 +68,51 @@ namespace Flash{
                 }
 
                 targetFile.close();
+            }
+
+            std::vector<Flashcard> parseBulkFile(const std::string& fileName){
+                // create temp map
+                std::vector<Flashcard> tmp;
+                
+                //open file
+                std::ifstream targetFile(fileName);
+
+                //read each line into a flashcard
+                std::string rawLine;
+
+                while (std::getline (targetFile, rawLine)){
+                    //ignore empty lines
+                    if (rawLine != ""){
+                        tmp.push_back(parseLine(rawLine));
+                    }
+                }
+
+                targetFile.close();
+                std::ofstream ofs("dump.txt", std::ios::out | std::ios::trunc);
+                ofs << "";
+                ofs.close();
+                
+                return tmp;
+            }
+
+            void bulkUpload(){
+                std::cout << "Waiting for file to close...\n";
+
+                // Open file dialogue
+                system("dump.txt");
+
+                // Parse file and load cards into temp vector
+                std::vector<Flashcard> tmp = parseBulkFile("dump.txt");
+
+                // Output card contents and push cards onto stack
+                for (const auto& card : tmp){
+                    std::cout << "Question: " << card.getInfo().question << "\n";
+                    std::cout << "Answer: " << card.getInfo().answer << "\n \n";
+                    manager.addFlashcard(card);
+                }
+
+                // Execution completes
+                std::cout << "File streaming complete. \n";
             }
 
         private:

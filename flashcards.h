@@ -185,7 +185,12 @@ public:
         library.close();
     }
 
-    void writeLibraryToStorage(std::vector<Flashcard> bffr){
+    void writeLibraryToStorage(){
+        std::vector<Flashcard> bffr;
+        for (const auto& it : flashcards){
+            bffr.push_back(it.second);
+        }
+
         std::ofstream library("library.txt", std::ios::out);
 
         for (const auto& it : bffr){
