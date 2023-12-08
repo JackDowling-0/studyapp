@@ -1,5 +1,3 @@
-#include "lib.h"
-
 // //function template
 // currMenu->addAction({"name",
 // "description",
@@ -30,6 +28,28 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
     currMenu->addMenu(Menu("view", "View Flashcards", currMenu));
     currMenu->addMenu(Menu("practice", "Practice Flashcards", currMenu));
 
+    //Init options for main menu
+    currMenu->addAction({"create",
+    "Create and add flashcards",
+        std::function<void(std::string)>([&](std::string s = ""){
+            //function logic
+            currMenu = &currMenu->menus[0];
+        })});
+
+    currMenu->addAction({"view",
+    "View and edit flashcards",
+        std::function<void(std::string)>([&](std::string s = ""){
+            //function logic
+            currMenu = &currMenu->menus[1];
+        })});
+
+    currMenu->addAction({"practice",
+    "Practice your flashcards",
+        std::function<void(std::string)>([&](std::string s = ""){
+            //function logic
+            currMenu = &currMenu->menus[2];
+        })});
+
     //move to Menu -> menus (1/3) // currMenu = mainMenu.menus[0]
     currMenu = &currMenu->menus[0];
     
@@ -51,6 +71,8 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
             std::function<void(std::string)>([&manager, &parser, &currMenu, &mainMenu](std::string s){
                 //function logic
 
+                std::cout << "Enter a line that you'd like to parse into a flashcard: \n    ";
+
 
                 std::string str = "init";
                 //start loop to take in lines
@@ -62,7 +84,12 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                     }
 
                     // Parse the given line and place the card on the stack
-                    manager.addFlashcard(parser.parseLine(str));
+                    Flashcard card = parser.parseLine(str);
+                    if (card.getInfo().ID == -1){
+                        continue;
+                    } else {
+                        manager.addFlashcard(card);
+                    }
                 } 
 
                 //return to main menu
@@ -102,11 +129,10 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
 
 
             })});
-    
-        //Initialize submenus for "create"
 
 
     //"VIEW" MENU
+    //move to Menu -> menus (2/3) // currMenu = mainMenu.menus[1]
     currMenu = &mainMenu.menus[1];
 
     //init edit menu
@@ -150,6 +176,7 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
         })});
 
     //"PRACTICE" MENU
+    //move to Menu -> menus (3/3) // currMenu = mainMenu.menus[2]
     currMenu = &mainMenu.menus[2];
 
         //initialize subMenus -> add function
@@ -159,18 +186,19 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
             std::function<void(std::string)>([&manager, &parser, &currMenu, &mainMenu](std::string s = ""){
                 //function logic
 
-                std::cout << "Press any key to continue, 'q' to quit back to main menu." << std::endl;
-                for (const auto& card : manager.flashcards){
-                    if (manager.practiceCard(card.first) == 1){break;}
+                while (true){
+                    std::cout << "Press any key to continue, 'q' to quit back to main menu." << std::endl;
+                    for (const auto& card : manager.flashcards){
+                        if (manager.practiceCard(card.first) == 1){currMenu = &mainMenu; return;}
+                    }
                 }
-                currMenu = &mainMenu;
-
 
             })});
 
         currMenu->addAction({"multiSelect",
         "Select from a set of flashcards to practice",
             std::function<void(std::string)>([&manager, &parser](std::string s = ""){
+                std::cout << "Enter the ID of the flashcards you'd like to review, separated by spaces: ";
                 //function logic
                 std::string input;
                 getline(std::cin, input);
@@ -220,19 +248,18 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                     loop:
                 while (true){
 
-                    std::cout << "Enter lower range: ";
+                    std::cout << "Enter lower range: " << std::endl;
                     getline(std::cin, min);
                     if (min.empty()){ continue;} else if (min == "q"){return;}
 
-                    std::cout << "Enter upper range: ";
+                    std::cout << "Enter upper range: " << std::endl;
                     getline(std::cin, max);
                     if (max.empty()){ continue;} else if (max == "q"){return;}
-                    std::cout << max;
 
                     for (const char& c : min){
                         if (!isdigit(c)){
                             if (c == 'q'){return;}
-                            std::cout << "Invalid input. Please provide a number and a range. \n";
+                            std::cout << "Invalid input. Please provide a number and a range." << std::endl;
                             continue;
                         }
                     }
@@ -242,13 +269,13 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                 while (true){
                     std::vector<int> nums = {stoi(min), stoi(max)};
                     
-                    for (const int& num : nums){
+                    for (int i = nums[0]; i <= nums[1]; i++){
                         //see if either of our numbers are out of range
-                        if (!manager.flashcards.count(nums[0]) || !manager.flashcards.count(nums[1])){
+                        if (!manager.flashcards.count(i)){
                             std::cout << "Cards out of range. Please try again.\n";
                             goto loop;
                         }
-                        if (manager.practiceCard(num) == 1) {return;}
+                        if (manager.practiceCard(i) == 1) {return;}
                     }
                 }
                 }();

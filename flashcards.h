@@ -249,7 +249,7 @@ public:
         }
         fflush(stdin);
 
-        std::cout << "      " << card.getInfo().answer << "\n";
+        std::cout << "\n      " << card.getInfo().answer << "\n";
         c = getch();
         if (c == 'q'){
             return(1);

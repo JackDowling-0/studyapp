@@ -27,6 +27,14 @@ class Menu {
             std::cout << "'" << description << "'" << std::endl;
         }
 
+        virtual void listOptions() const {
+            int i = 0;
+            for (const auto& option : this->options){
+                std::cout << i << ". " << option.first << ": " << option.second.optionDescription << "\n";
+                i++;
+            } std::cout << std::endl;
+        }
+
         void addMenu(Menu menu){
             menus.emplace_back(menu);
         }
