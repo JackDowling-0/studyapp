@@ -38,17 +38,20 @@ namespace Flash{
 
                 // Find the position of the separator
                 size_t separatorPos = line.find(separator);
+                if (separatorPos != line.npos){
+                    // Extract substrings and trim whitespace
+                    std::string leftSubstring = trim(line.substr(0, separatorPos));
+                    std::string rightSubstring = trim(line.substr(separatorPos + 1));
 
-                // Extract substrings and trim whitespace
-                std::string leftSubstring = trim(line.substr(0, separatorPos));
-                std::string rightSubstring = trim(line.substr(separatorPos + 1));
+                    int rawID = nextID;
 
-                int rawID = nextID;
+                    card.updateID(rawID);
+                    card.updateElement(leftSubstring, rightSubstring);
 
-                card.updateID(rawID);
-                card.updateElement(leftSubstring, rightSubstring);
-
-                return card;
+                    return card;
+                } else {
+                    std::cout << "Please provide a question/answer pair separated by ':' \n";
+                } return card;
             }
 
             //reads lines into the program, converting one line at a time
@@ -111,6 +114,7 @@ namespace Flash{
                     manager.addFlashcard(card);
                 }
 
+                manager.updateIDs();
                 // Execution completes
                 std::cout << "File streaming complete. \n";
             }

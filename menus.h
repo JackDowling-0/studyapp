@@ -27,12 +27,21 @@ class Menu {
             std::cout << "'" << description << "'" << std::endl;
         }
 
+        int listOptions() const {
+            int i = 0;
+            for (const auto& option : this->options){
+                std::cout << i << ". " << option.optionName << ": " << option.optionDescription << "\n";
+                i++;
+            }
+            return i;
+        }
+
         void addMenu(Menu menu){
             menus.emplace_back(menu);
         }
 
         void addAction(Option const& o) {
-            this->options[o.optionName] = o;
+            this->options.emplace_back(o);
         }
 
         void moveMenu(Menu& currMenu){
@@ -44,11 +53,11 @@ class Menu {
         }
 
         std::vector<Menu> menus;
-        std::map<std::string, Option> options;
+        std::vector<Option> options;
+        std::string menuName;
     private:
 
         Menu* prevMenu = this;
-        std::string menuName;
         std::string description;
 };
 
