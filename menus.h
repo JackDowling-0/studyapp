@@ -27,12 +27,13 @@ class Menu {
             std::cout << "'" << description << "'" << std::endl;
         }
 
-        virtual void listOptions() const {
+        int listOptions() const {
             int i = 0;
             for (const auto& option : this->options){
                 std::cout << i << ". " << option.first << ": " << option.second.optionDescription << "\n";
                 i++;
-            } std::cout << std::endl;
+            }
+            return i;
         }
 
         void addMenu(Menu menu){
@@ -53,10 +54,10 @@ class Menu {
 
         std::vector<Menu> menus;
         std::map<std::string, Option> options;
+        std::string menuName;
     private:
 
         Menu* prevMenu = this;
-        std::string menuName;
         std::string description;
 };
 

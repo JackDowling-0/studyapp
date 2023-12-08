@@ -7,7 +7,8 @@ int main(){
 
     Init(manager, parser, mainMenu, currMenu);
     
-    inputHandler(currMenu);
+    inputHandler();
 
+    manager.writeLibraryToStorage();
     return 0;
 }

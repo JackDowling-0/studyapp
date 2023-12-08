@@ -99,7 +99,7 @@ public:
     //display specified flashcard
     void displayCard(const int& cardNumber) {
 
-        std::cout << "Printing flashcard...\n";
+        // std::cout << "Printing flashcard...\n";
         if (flashcards.find(cardNumber) != flashcards.end()) {
             Flashcard::FlashcardInfo info = flashcards[cardNumber].getInfo();
             

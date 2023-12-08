@@ -3,7 +3,6 @@
 // "description",
 //     std::function<void(std::string)>([&manager, &parser](std::string s = ""){
 //         //function logic
-
 //     })});
 
 namespace Flash{
@@ -40,7 +39,15 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
     "View and edit flashcards",
         std::function<void(std::string)>([&](std::string s = ""){
             //function logic
-            currMenu = &currMenu->menus[1];
+            std::string str;
+            int i = 0;
+
+            //display all flashcards (this is manager.displayCards() but reformatted)
+            for (const auto& card : manager.flashcards){
+                std::cout << card.second.getInfo().ID << ": " << card.second.getInfo().question << "\n";
+                std::cout << "      " << card.second.getInfo().answer << std::endl;
+            }
+            getch();
         })});
 
     currMenu->addAction({"practice",
@@ -55,9 +62,9 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
     
     /*"CREATE" FUNCTIONS*/
     //BULK UPLOAD
-    currMenu->addAction({"bulkUpload",
+    currMenu->addAction({"batch",
         "Create a set of cards by uploading a file.",
-            std::function<void(std::string)>([&manager, &parser](std::string s = ""){
+            std::function<void(std::string)>([&](std::string s = ""){
                 //function logic
 
                 std::cout << "Reading from file...\n";
@@ -66,9 +73,9 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
             })});
 
     //LINE UPLOAD
-    currMenu->addAction({"lineUpload",
+    currMenu->addAction({"line",
         "Create a set of cards by providing a line.",
-            std::function<void(std::string)>([&manager, &parser, &currMenu, &mainMenu](std::string s){
+            std::function<void(std::string)>([&](std::string s){
                 //function logic
 
                 std::cout << "Enter a line that you'd like to parse into a flashcard: \n    ";
@@ -92,6 +99,9 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                     }
                 } 
 
+                //write library to storage
+                manager.writeLibraryToStorage();
+
                 //return to main menu
                 currMenu = &mainMenu;
 
@@ -100,7 +110,7 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
     //FLASHCARD BUILDER
     currMenu->addAction({"creator",
         "Create a set of cards with the creation wizard.",
-            std::function<void(std::string)>([&manager, &parser, &currMenu, &mainMenu](std::string){
+            std::function<void(std::string)>([&](std::string){
                 //function logic
 
                 //start main input loop, break if input is ever empty
@@ -120,9 +130,12 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                         break;
                     }
 
-                    //load onto temporary flashcard
+                    //load flashcard into memory
                     manager.addFlashcard(nextID, q, a);
                 }
+
+                //write library to storage
+                manager.writeLibraryToStorage();
 
                 //send back to main menu
                 currMenu = &mainMenu;
@@ -136,44 +149,8 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
     currMenu = &mainMenu.menus[1];
 
     //init edit menu
-    currMenu->addMenu(Menu("edit", "Edit this flashcard.", currMenu->getPrevMenu()));
+    // currMenu->addMenu(Menu("edit", "Edit a flashcard.", currMenu->getPrevMenu()));
 
-    /*FUNCTIONS*/
-
-    // display and inspect
-    currMenu->addAction({"displayAll",
-    "Display all cards with IDs",
-        std::function<void(std::string)>([&manager, &parser, &currMenu](std::string s = ""){
-            //function logic
-
-            std::string str;
-            int i = 0;
-            //display all flashcards (this is manager.displayCards() but reformatted)
-            for (const auto& card : manager.flashcards){
-                std::cout << card.second.getInfo().ID << ": " << card.second.getInfo().question << "\n";
-                std::cout << "      " << card.second.getInfo().answer << std::endl;
-            }
-
-            while (str != "back" && str != "edit" && str != "exit") {
-                std::cout << "Input a card number to inspect (or 'back' to return to the main menu): ";
-                std::cin >> str;
-
-                if (isValidInput(str)) {
-                    i = std::stoi(str);
-
-                    if (manager.flashcards.count(i)) {
-                        manager.displayCard(i);
-                    } else {
-                        std::cout << "Error! Card " << i << " not found!\n";
-                    }
-                } else if (str == "exit"){
-                    exit(0);
-                } else if (str == "edit"){
-                    //enter edit menu
-                    currMenu = &currMenu->menus.at(0);
-                }
-            }
-        })});
 
     //"PRACTICE" MENU
     //move to Menu -> menus (3/3) // currMenu = mainMenu.menus[2]
@@ -183,7 +160,7 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
 
         currMenu->addAction({"rotate",
         "Rotate through all cards",
-            std::function<void(std::string)>([&manager, &parser, &currMenu, &mainMenu](std::string s = ""){
+            std::function<void(std::string)>([&](std::string s = ""){
                 //function logic
 
                 while (true){
@@ -195,9 +172,9 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
 
             })});
 
-        currMenu->addAction({"multiSelect",
+        currMenu->addAction({"multi",
         "Select from a set of flashcards to practice",
-            std::function<void(std::string)>([&manager, &parser](std::string s = ""){
+            std::function<void(std::string)>([&](std::string s = ""){
                 std::cout << "Enter the ID of the flashcards you'd like to review, separated by spaces: ";
                 //function logic
                 std::string input;
@@ -226,6 +203,7 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
 
                 //keep looping over cards until told to stop
                 while (true){
+                    std::cout << "\n'q' to quit" << std::endl;
                     for (const auto& str : practiceBffr){
                         if (manager.flashcards.count(str)){
                             //return back to main if we receive signal 1(q pressed)
@@ -236,9 +214,9 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
 
             })});
 
-        currMenu->addAction({"rangeSelect",
+        currMenu->addAction({"range",
         "Select from a range of flashcards to practice",
-            std::function<void(std::string)>([&manager, &parser, &currMenu, &mainMenu](std::string s = ""){
+            std::function<void(std::string)>([&](std::string s = ""){
                 //function logic
                 std::string min, max;
 
