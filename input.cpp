@@ -28,6 +28,7 @@ void inputHandler() {
 
             // Start input loop
             std::getline(std::cin, input);
+            if (input.find_first_not_of(" ") != 0 || input.find_first_not_of(" ") == input.npos){goto inputLoop;}
 
             // Check if the input matches any option
             for (const auto& option : currMenu->options){

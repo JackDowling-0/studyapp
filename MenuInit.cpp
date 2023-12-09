@@ -206,7 +206,6 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                     std::cout << "\n'q' to quit" << std::endl;
                     for (const auto& str : practiceBffr){
                         if (manager.flashcards.count(str)){
-                            //return back to main if we receive signal 1(q pressed)
                             if (manager.practiceCard(manager.flashcards.at(str).getInfo().ID) == 1) {return;}
                         }
                     }
@@ -221,7 +220,6 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                 std::string min, max;
 
                 //loop until user provides us with a valid range or presses q
-
                 [&]{
                     loop:
                 while (true){
