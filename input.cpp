@@ -4,12 +4,18 @@
 
 namespace Flash{
 
+void clearScreen(){
+    system("cls");
+}
+
 void inputHandler() {
 
     [&] {inputLoop:
         while (true) {
             std::string input = "";
             int i = 0;
+
+            clearScreen();
 
             // Print the menu
             currMenu->displayMenu();

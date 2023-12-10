@@ -78,7 +78,9 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
             std::function<void(std::string)>([&](std::string s){
                 //function logic
 
-                std::cout << "Enter a line that you'd like to parse into a flashcard: \n    ";
+                system("cls");
+
+                std::cout << "Enter a line that you'd like to parse into a flashcard: \n\n";
 
 
                 std::string str = "init";
@@ -115,6 +117,7 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
 
                 //start main input loop, break if input is ever empty
                 while (true){
+                    system("cls");
                     //get question, answer
                     std::string q, a;
                     
@@ -166,6 +169,7 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                 while (true){
                     std::cout << "Press any key to continue, 'q' to quit back to main menu." << std::endl;
                     for (const auto& card : manager.flashcards){
+                        system("cls");
                         if (manager.practiceCard(card.first) == 1){currMenu = &mainMenu; return;}
                     }
                 }
@@ -205,6 +209,7 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                 while (true){
                     std::cout << "\n'q' to quit" << std::endl;
                     for (const auto& str : practiceBffr){
+                        system("cls");
                         if (manager.flashcards.count(str)){
                             if (manager.practiceCard(manager.flashcards.at(str).getInfo().ID) == 1) {return;}
                         }
@@ -251,6 +256,7 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                             std::cout << "Cards out of range. Please try again.\n";
                             goto loop;
                         }
+                        system("cls");
                         if (manager.practiceCard(i) == 1) {return;}
                     }
                 }
@@ -258,8 +264,6 @@ void Init(Flash::FlashcardManager& manager, Flash::Parser& parser, Menu& mainMen
                 
             currMenu = &mainMenu;
             })});
-
-        currMenu->addMenu(Menu("range", "Practice from a range of cards.", currMenu));
 
     currMenu = &mainMenu;
 

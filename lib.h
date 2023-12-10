@@ -9,6 +9,7 @@
 #include <fstream>
 #include <conio.h>
 #include <sstream>
+#include <windows.h>
 
 //Proprietary libraries
 #include "flashcards.h"
