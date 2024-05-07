@@ -1,0 +1,20 @@
+[
+{
+  "directory": "C:/Users/black/vscode projects/studyapp/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe   -g -o CMakeFiles\\studyapp.dir\\src\\flashcardmanager.cpp.obj -c \"C:\\Users\\black\\vscode projects\\studyapp\\src\\flashcardmanager.cpp\"",
+  "file": "C:/Users/black/vscode projects/studyapp/src/flashcardmanager.cpp",
+  "output": "CMakeFiles/studyapp.dir/src/flashcardmanager.cpp.obj"
+},
+{
+  "directory": "C:/Users/black/vscode projects/studyapp/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe   -g -o CMakeFiles\\studyapp.dir\\src\\main.cpp.obj -c \"C:\\Users\\black\\vscode projects\\studyapp\\src\\main.cpp\"",
+  "file": "C:/Users/black/vscode projects/studyapp/src/main.cpp",
+  "output": "CMakeFiles/studyapp.dir/src/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/black/vscode projects/studyapp/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe   -g -o CMakeFiles\\studyapp.dir\\src\\menus.cpp.obj -c \"C:\\Users\\black\\vscode projects\\studyapp\\src\\menus.cpp\"",
+  "file": "C:/Users/black/vscode projects/studyapp/src/menus.cpp",
+  "output": "CMakeFiles/studyapp.dir/src/menus.cpp.obj"
+}
+]

@@ -1,0 +1,11 @@
+1. Implement Parser
+2. Implement File Writing
+3. Implement FIle Reading
+4. Implement Uploads
+    1. Batch
+    2. Line
+    3. Creator
+5. Insert housekeeping (file writing) after certain actions
+    1. Program end
+    2. Creating flashcard
+    3. Deleting flashcard
