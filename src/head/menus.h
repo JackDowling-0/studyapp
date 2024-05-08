@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <conio.h>
+#include <limits>
 
 struct Menu {
     std::string menuName;
@@ -25,5 +26,6 @@ void const MainMenu();
 void const PracticeMenu();
 void const CreateMenu();
 void const RemoveMenu();
-
+void const exit_program();
+void const promptWizard();
 #endif
