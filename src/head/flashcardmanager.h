@@ -1,8 +1,13 @@
 #ifndef FLASHCARDMANAGER_H
 #define FLASHCARDMANAGER_H
 
+#include <iostream>
+#include <algorithm>
+#include <conio.h>
+#include <limits>
+#include <random>
 #include <string>
-#include <vector>
+#include <fstream>
 
 class Flashcard {
     public:
@@ -10,17 +15,22 @@ class Flashcard {
     Flashcard(size_t id = 0, std::string question = "", std::string answer = "") : ID(id), question(question), answer(answer){}
 
     //update the current flashcard's ID
-    void updateID(const size_t& num);
+    void updateID(const size_t& num){
+        this->ID = num;
+    }
 
+    //retrive ID
     size_t getID() const { return ID; }
+    //retrieve question
     std::string getQuestion() const { return question; }
+    //retrieve answer
     std::string getAnswer() const {return answer; }
 
+    //overload comparison operator to allow for library sorting
     bool operator<(const Flashcard& other) const{
         return ID < other.ID;
     }
     private:
-
         size_t ID;
         std::string question;
         std::string answer;
@@ -29,10 +39,11 @@ class Flashcard {
 
 class FlashcardManager {
     private:
+        //singleton
         static FlashcardManager* instance;
         std::vector<Flashcard> flashcards;
         FlashcardManager() {};
-        size_t nextID;
+        size_t nextID = 0;
 
     public:
         //constructor
@@ -44,6 +55,10 @@ class FlashcardManager {
                 instance = new FlashcardManager();
             }
             return instance;
+        }
+
+        void setNextID(const size_t& num){
+            nextID = num;
         }
 
         //construct and add flashcards to the stack
@@ -82,12 +97,9 @@ class FlashcardManager {
         void practiceSelectedCards(const std::vector<size_t>& selectedCards);
         void shuffleCards();
         void rangeSelect();
-        
-        //grab structured flashcard data
-        void getFlashcardData();
 
         //get nextID from manager
-        size_t const getNextID();
+        size_t getNextID();
 
 
 
