@@ -1,3 +1,0 @@
-C:/Users/black/vscode projects/studyapp/build/CMakeFiles/studyapp.dir
-C:/Users/black/vscode projects/studyapp/build/CMakeFiles/edit_cache.dir
-C:/Users/black/vscode projects/studyapp/build/CMakeFiles/rebuild_cache.dir
