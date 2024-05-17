@@ -9,33 +9,10 @@
 #include <string>
 #include <fstream>
 
-class Flashcard {
-    public:
-    //default constructor
-    Flashcard(size_t id = 0, std::string question = "", std::string answer = "") : ID(id), question(question), answer(answer){}
-
-    //update the current flashcard's ID
-    void updateID(const size_t& num){
-        this->ID = num;
-    }
-
-    //retrive ID
-    size_t getID() const { return ID; }
-    //retrieve question
-    std::string getQuestion() const { return question; }
-    //retrieve answer
-    std::string getAnswer() const {return answer; }
-
-    //overload comparison operator to allow for library sorting
-    bool operator<(const Flashcard& other) const{
-        return ID < other.ID;
-    }
-    private:
-        size_t ID;
-        std::string question;
-        std::string answer;
-
-}; // end flashcard
+struct Flashcard {
+    std::string question;
+    std::string answer;
+};
 
 class FlashcardManager {
     private:
@@ -57,26 +34,26 @@ class FlashcardManager {
             return instance;
         }
 
-        void setNextID(const size_t& num){
+        void setNextID(size_t num){
             nextID = num;
         }
 
         //construct and add flashcards to the stack
-        void addFlashcard(size_t ID, std::string question, std::string answer);
+        void addFlashcard(std::string& question, std::string& answer);
         void addFlashcard(const Flashcard& card);
 
         //update all IDs
         void updateIDs();
 
         //display specified flashcard
-        void displayCard(const size_t& cardNumber);
+        void displayCard(size_t cardNumber);
         void displayCard(const Flashcard& flashcard);
 
         //display all flashcards
         void displayAllCards();
 
         //remove a flashcard
-        bool removeFlashcard(const size_t& cardNumber);
+        bool removeFlashcard(size_t cardNumber);
 
         //add card to storage
         void appendCardToStorage(const Flashcard& flashcard);
@@ -88,7 +65,7 @@ class FlashcardManager {
         void readFromStorage();
 
         //practice card
-        void practiceCard(const size_t& cardNumber);
+        void practiceCard(size_t cardNumber);
         void practiceCard(const Flashcard& card);
 
         //ways to practice

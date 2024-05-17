@@ -1,11 +1,11 @@
-#include "head/flashcardmanager.h"
+#include "flashcardmanager.h"
 
 FlashcardManager* FlashcardManager::instance = nullptr;
 
 FlashcardManager* flashcardManager = FlashcardManager::getInstance();
 
-void FlashcardManager::addFlashcard(size_t ID, std::string question, std::string answer){
-    flashcards.emplace_back(ID, question, answer);
+void FlashcardManager::addFlashcard(std::string& question, std::string& answer){
+    flashcards.emplace_back(Flashcard{question, answer});
     ++nextID;
 }
 void FlashcardManager::addFlashcard(const Flashcard& flashcard) {
@@ -13,16 +13,10 @@ void FlashcardManager::addFlashcard(const Flashcard& flashcard) {
     ++nextID;
 }
 
-
-void FlashcardManager::updateIDs(){
-    std::sort(flashcards.begin(), flashcards.end());
-}
-
-void FlashcardManager::displayCard(const size_t& cardNumber){
-
-    std::cout << "Card ID: " << flashcards[cardNumber].getID() + 1<< "." << std::endl;
-    std::cout << "Question: " << flashcards[cardNumber].getQuestion() << std::endl;
-    std::cout << "Answer: " << flashcards[cardNumber].getAnswer() << std::endl;
+void FlashcardManager::displayCard(size_t cardNumber){
+    std::cout << "Card ID: " << cardNumber + 1 << "." << std::endl;
+    std::cout << "Question: " << flashcards[cardNumber].question << std::endl;
+    std::cout << "Answer: " << flashcards[cardNumber].answer << std::endl;
 }
 
 
@@ -34,13 +28,9 @@ void FlashcardManager::displayAllCards() {
     }
 }
 
-bool FlashcardManager::removeFlashcard(const size_t& cardNumber){
+bool FlashcardManager::removeFlashcard(size_t cardNumber){
     if (cardNumber < flashcards.size()) {
         flashcards.erase(flashcards.begin() + cardNumber);
-        for (size_t i = cardNumber; i < flashcards.size(); ++i){
-            flashcards[i].updateID(i);
-        }
-        FlashcardManager::getInstance()->nextID -= 1;
         return true;
     } else {
         std::cerr << "Invalid card number: " << cardNumber << std::endl;
@@ -48,24 +38,25 @@ bool FlashcardManager::removeFlashcard(const size_t& cardNumber){
     }
 }
 
+//todo: pull from array
 void FlashcardManager::appendCardToStorage(const Flashcard& flashcard){
     std::ofstream library("library.txt", std::ios_base::app);
 
-    library << "ID: " << flashcard.getID() << std::endl;
-    library << "Question: " << flashcard.getQuestion() << std::endl;
-    library << "Answer: " << flashcard.getAnswer() << std::endl;
+    library << "Question: " << flashcard.question << std::endl;
+    library << "Answer: " << flashcard.answer << std::endl;
     
     library.close();
 }
 
+//todo: pull from array
 void FlashcardManager::writeLibraryToStorage(){
 
     std::ofstream library("library.txt", std::ios::out);
 
-    for (const auto& it : flashcards){
-        library << "ID: " << it.getID() << std::endl;
-        library << "Question: " << it.getQuestion() << std::endl;
-        library << "Answer: " << it.getAnswer() << std::endl;
+    for (size_t i = 0; i < flashcards.size(); ++i){
+        library << "ID: " << i << std::endl;
+        library << "Question: " << flashcards[i].question << std::endl;
+        library << "Answer: " << flashcards[i].answer << std::endl;
     }
     library.close();
 }
@@ -84,7 +75,6 @@ void FlashcardManager::readFromStorage(){
         return;
     }
 
-    size_t d;
     std::string q = "";
     std::string a = "";
     std::string line;
@@ -92,7 +82,7 @@ void FlashcardManager::readFromStorage(){
     Flashcard card;
     while (std::getline(library, line)){
         if (counter == 0){
-            d = stoull(line.substr(4));
+            nextID = stoull(line.substr(4));
             counter++;
             continue;
         } else if (counter == 1){
@@ -102,7 +92,7 @@ void FlashcardManager::readFromStorage(){
         } else if (counter == 2){
             a = line.substr(8);
             counter = 0;
-            addFlashcard(nextID, q, a);
+            addFlashcard(q, a);
             continue;
         }
     }
@@ -110,26 +100,26 @@ void FlashcardManager::readFromStorage(){
     library.close();
 }
 
-void FlashcardManager::practiceCard(const size_t& cardNumber){
+void FlashcardManager::practiceCard(size_t cardNumber){
     system("cls");
     Flashcard& card = flashcards[cardNumber];
 
     //display the question
-    std::cout << card.getQuestion() << std::endl;
+    std::cout << card.question << std::endl;
 
     getch();
     //display the answer
-    std::cout << "  " << card.getAnswer() << std::endl;
+    std::cout << "  " << card.answer << std::endl;
 
     getch();
 }
 void FlashcardManager::practiceCard(const Flashcard& card){
     system("cls");
 
-    std::cout << card.getQuestion() << std::endl;
+    std::cout << card.question << std::endl;
 
     getch();
-    std::cout << "  " << card.getAnswer() << std::endl;
+    std::cout << "  " << card.answer << std::endl;
     getch();
 }
 
@@ -174,8 +164,6 @@ void FlashcardManager::selectedPractice(){
             break;
         }
     }
-    //sort the array so we skip duplicate cards
-    std::sort(selectedCards.begin(), selectedCards.end());
 
     practiceSelectedCards(selectedCards);
     while (true){
@@ -191,7 +179,8 @@ void FlashcardManager::selectedPractice(){
 
 void FlashcardManager::practiceSelectedCards(const std::vector<size_t>& selectedCards){
     system("cls");
-    size_t currCard, prevCard;
+    size_t currCard = 0;
+    size_t prevCard = 0;
 
     for (const auto& it : selectedCards){
         currCard = it;
@@ -247,7 +236,7 @@ void FlashcardManager::rangeSelect(){
     //get range
     std::cout << "Start: ";
     std::cin >> start;
-    if (start < 0){
+    if (std::cin.fail() || start > INT16_MAX){
         std::cout << "Invalid input" << std::endl;
         return;
     }
@@ -265,19 +254,18 @@ void FlashcardManager::rangeSelect(){
         practiceCard(i);
     }
 
-    std::string input;
+    char input = 0;
     while (true){
         system("cls");
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
 
         std::cout << "\nContinue? (y/n): ";
-        std::getline(std::cin, input);
-        if (!input.empty() && !(input == "n") && !(input == "N")){
-            for (size_t i = start; i <= end; ++i){
-                practiceCard(i);
-            }
-        } else {
+
+        input = std::getchar();
+        if (input | (0x20 != 'y')){
             break;
+        }
+        for (size_t i = start; i <= end; ++i){
+            practiceCard(i);
         }
     }
 }

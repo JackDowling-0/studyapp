@@ -22,10 +22,10 @@ struct Menu {
 };
 
 //menus
-void const MainMenu();
-void const PracticeMenu();
-void const CreateMenu();
-void const RemoveMenu();
-void const exit_program();
-void const promptWizard();
+void MainMenu();
+void PracticeMenu();
+void CreateMenu();
+void RemoveMenu();
+void exit_program();
+void promptWizard();
 #endif

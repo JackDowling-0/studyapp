@@ -1,8 +1,8 @@
-#include "head/parser.h"
-#include "head/flashcardmanager.h"
-#include "head/menus.h"
+#include "parser.h"
+#include "flashcardmanager.h"
+#include "menus.h"
 
-void const MainMenu(){
+void MainMenu(){
 
     FlashcardManager* flashcardManager = FlashcardManager::getInstance();
     
@@ -54,7 +54,7 @@ void const MainMenu(){
     }
 }
 
-void const PracticeMenu(){
+void PracticeMenu(){
     Menu practiceMenu("Practice Flashcards", {"Rotate", "Select", "Shuffle", "Range", "Back to Main Menu", "Exit"});
 
     practiceMenu.displayMenu();
@@ -93,7 +93,7 @@ void const PracticeMenu(){
     }
 }
 
-void const CreateMenu(){
+void CreateMenu(){
 
     Menu createMenu("Create or Upload a Flashcard", {"Batch Upload", "Line Upload", "Prompt Wizard", "Back to Main Menu", "Exit"});
 
@@ -130,7 +130,7 @@ void const CreateMenu(){
     return;
 }
 
-void const exit_program(){
+void exit_program(){
     FlashcardManager::getInstance()->writeLibraryToStorage();
     FlashcardManager::getInstance()->displayAllCards();
     return;
@@ -152,7 +152,7 @@ void startLineUpload(){
         }
 
         Flashcard card = parseLine(input, ':');
-        if (card.getAnswer() != "" && card.getAnswer() != ""){
+        if (card.answer != "" && card.answer != ""){
             FlashcardManager::getInstance()->addFlashcard(card);
             FlashcardManager::getInstance()->writeLibraryToStorage();
         }
@@ -161,7 +161,7 @@ void startLineUpload(){
     return;
 }
 
-void const promptWizard(){
+void promptWizard(){
     std::cout << "Enter a question and answer pair below to create a flashcard\nPress enter on an empty line to return." <<std::endl;
 
     std::string question;
@@ -185,7 +185,7 @@ void const promptWizard(){
             return;
         }
 
-        FlashcardManager::getInstance()->addFlashcard(FlashcardManager::getInstance()->getNextID(), question, answer);
+        FlashcardManager::getInstance()->addFlashcard(Flashcard{question, answer});
     }
     return;
 }

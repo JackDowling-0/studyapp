@@ -1,1 +1,6 @@
 .vscode/settings.json
+build/
+raylib/
+dump.txt
+library.txt
+.gitignore

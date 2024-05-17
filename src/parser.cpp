@@ -1,8 +1,9 @@
-#include "head/parser.h"
-#include "head/flashcardmanager.h"
+#include "parser.h"
+#include "flashcardmanager.h"
 
 bool isLetter(char letter) {
-    return (letter >= 'A' && letter <= 'Z' || letter >= 'a' && letter <= 'z');
+    return  ((letter >= 'A') && (letter <= 'Z')) || 
+            ((letter >= 'a') && (letter <= 'z'));
 }
 
 std::string trim(const std::string& str) {
@@ -48,17 +49,17 @@ Flashcard parseLine(const std::string& line, char separator = ':'){
         std::string leftSubstring = trim(line.substr(0, separatorPos));
         std::string rightSubstring = trim(line.substr(separatorPos + 1));
 
-        Flashcard card(FlashcardManager::getInstance()->getNextID(), leftSubstring, rightSubstring);
+        Flashcard card{leftSubstring, rightSubstring};
 
         return card;
     } else {
         std::cout << "Please provide a question/answer pair separated by ':' \n";
-        return {0, "", ""};
+        return {"", ""};
     }
 }
 
 void parsefile(const std::string& fileName){
-        //open file
+    //open file
     std::ifstream targetFile(fileName);
 
     //read each line into a flashcard
@@ -81,8 +82,8 @@ void bulkUpload(){
     std::vector<Flashcard> tmp = parseBulkFile("dump.txt");
 
     for (const auto& card : tmp){
-        std::cout << "Question: " << card.getQuestion() << "\n";
-        std::cout << "Answer: " << card.getAnswer() << "\n \n";
+        std::cout << "Question: " << card.answer << "\n";
+        std::cout << "Answer: " << card.answer << "\n \n";
         FlashcardManager::getInstance()->addFlashcard(card);
     }
 
