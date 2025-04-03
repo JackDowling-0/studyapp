@@ -1,0 +1,13 @@
+bin
+build
+lib
+
+*.a
+*.o
+*.exe
+*.so
+*.lib
+*.dll
+
+dump.txt
+library.txt

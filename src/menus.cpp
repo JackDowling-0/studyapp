@@ -1,6 +1,7 @@
 #include "head/parser.h"
 #include "head/flashcardmanager.h"
 #include "head/menus.h"
+#include "head/utility.h"
 
 void const MainMenu(){
 
@@ -14,7 +15,7 @@ void const MainMenu(){
     //we will just return out of all subsequent submenus
     Menu mainMenu("Main Menu", {"View", "Practice", "Create", "Delete", "Exit"});
     while(true){
-        system("cls");
+        clear_screen();
 
         mainMenu.displayMenu();
 
@@ -24,7 +25,7 @@ void const MainMenu(){
         switch(input){
             case 1:
                 flashcardManager->displayAllCards();
-                getch();
+                getc(stdin);
                 break;
             case 2:
                 PracticeMenu();
@@ -62,7 +63,7 @@ void const PracticeMenu(){
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
 
     while(true){
-        system("cls");
+        clear_screen();
         practiceMenu.displayMenu();
 
         std::cin >> input;
@@ -101,7 +102,7 @@ void const CreateMenu(){
 
     size_t input = 0;
     while (true){
-        system("cls");
+        clear_screen();
         createMenu.displayMenu();
 
         std::cin >> input;
@@ -138,7 +139,7 @@ void const exit_program(){
 
 void startLineUpload(){
     
-    system("cls");
+    clear_screen();
 
     std::cout << "Enter a colon-separated line that you'd like to parse into a flashcard (Enter to exit): \n\n";
     std::string input;
@@ -169,7 +170,7 @@ void const promptWizard(){
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
 
     while(true){
-        system("cls");
+        clear_screen();
 
         std::cout << "Enter a question: " << std::endl;
         std::getline(std::cin, question);

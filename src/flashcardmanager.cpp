@@ -1,4 +1,5 @@
 #include "head/flashcardmanager.h"
+#include "head/utility.h"
 
 FlashcardManager* FlashcardManager::instance = nullptr;
 
@@ -111,30 +112,30 @@ void FlashcardManager::readFromStorage(){
 }
 
 void FlashcardManager::practiceCard(const size_t& cardNumber){
-    system("cls");
+    clear_screen();
     Flashcard& card = flashcards[cardNumber];
 
     //display the question
     std::cout << card.getQuestion() << std::endl;
 
-    getch();
+    getc(stdin);
     //display the answer
     std::cout << "  " << card.getAnswer() << std::endl;
 
-    getch();
+    getc(stdin);
 }
 void FlashcardManager::practiceCard(const Flashcard& card){
-    system("cls");
+    clear_screen();
 
     std::cout << card.getQuestion() << std::endl;
 
-    getch();
+    getc(stdin);
     std::cout << "  " << card.getAnswer() << std::endl;
-    getch();
+    getc(stdin);
 }
 
 void FlashcardManager::rotateThroughCards(){
-    system("cls");
+    clear_screen();
     for (const auto& card : flashcards){
         practiceCard(card);
     }
@@ -158,7 +159,7 @@ void FlashcardManager::rotateThroughCards(){
 
 //ways to practice
 void FlashcardManager::selectedPractice(){
-    system("cls");
+    clear_screen();
     std::vector<size_t> selectedCards;
     displayAllCards();
 
@@ -190,7 +191,7 @@ void FlashcardManager::selectedPractice(){
 }
 
 void FlashcardManager::practiceSelectedCards(const std::vector<size_t>& selectedCards){
-    system("cls");
+    clear_screen();
     size_t currCard, prevCard;
 
     for (const auto& it : selectedCards){
@@ -203,7 +204,7 @@ void FlashcardManager::practiceSelectedCards(const std::vector<size_t>& selected
     }
 }
 void FlashcardManager::shuffleCards(){
-    system("cls");
+    clear_screen();
     std::vector<size_t> randomFlashcards;
 
     for (size_t i = 0; i < flashcards.size(); ++i){
@@ -222,7 +223,7 @@ void FlashcardManager::shuffleCards(){
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
 
     while (true){
-        system("cls");
+        clear_screen();
 
         std::cout << "\nContinue? (y/n): ";
         std::getline(std::cin, input);
@@ -237,7 +238,7 @@ void FlashcardManager::shuffleCards(){
     }
 }
 void FlashcardManager::rangeSelect(){
-    system("cls");
+    clear_screen();
     displayAllCards();
 
     size_t start;
@@ -267,7 +268,7 @@ void FlashcardManager::rangeSelect(){
 
     std::string input;
     while (true){
-        system("cls");
+        clear_screen();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
 
         std::cout << "\nContinue? (y/n): ";
