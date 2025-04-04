@@ -283,6 +283,14 @@ void FlashcardManager::rangeSelect(){
     }
 }
 
+bool FlashcardManager::hasCards(){
+    return !FlashcardManager::getInstance()->flashcards.empty();
+}
+
+int FlashcardManager::getNumberOfCards(){
+    return FlashcardManager::getInstance()->flashcards.size();
+}
+
 size_t FlashcardManager::getNextID(){
     return FlashcardManager::getInstance()->nextID;
 }

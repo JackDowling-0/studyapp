@@ -100,8 +100,12 @@ class FlashcardManager {
 
         //get nextID from manager
         size_t getNextID();
+        
+        //check if any cards
+        static bool hasCards();
 
-
+        //return number of cards in memory
+        static int getNumberOfCards();
 
 }; //end flashcardmanager
 

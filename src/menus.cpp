@@ -26,6 +26,7 @@ void const MainMenu(){
             case 1:
                 flashcardManager->displayAllCards();
                 getc(stdin);
+                getc(stdin);
                 break;
             case 2:
                 PracticeMenu();
@@ -34,9 +35,10 @@ void const MainMenu(){
                 CreateMenu();
                 break;
             case 4:
+                //delete
                 flashcardManager->displayAllCards();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
-
+                
                 std::getline(std::cin, delNum);
                 if (delNum == "\n"){
                     break;
@@ -48,6 +50,7 @@ void const MainMenu(){
                 }
             case 5:
                 std::cout << "Exiting..." << std::endl;
+                exit_program();
                 return;
             default:
                 std::cout << "Invalid input. Please select a valid option." << std::endl;
@@ -56,6 +59,16 @@ void const MainMenu(){
 }
 
 void const PracticeMenu(){
+    
+    if(!FlashcardManager::hasCards()){
+        std::cout << "No cards in library!" << std::endl;
+        std::cout << FlashcardManager::getNumberOfCards() << std::endl;
+        sleep(1);
+        clear_screen();
+        
+        return;
+    }
+
     Menu practiceMenu("Practice Flashcards", {"Rotate", "Select", "Shuffle", "Range", "Back to Main Menu", "Exit"});
 
     practiceMenu.displayMenu();
@@ -86,7 +99,7 @@ void const PracticeMenu(){
                 return;
             case 6:
                 std::cout << "Exiting..." << std::endl;
-                exit(1);
+                exit_program();
             default:
                 std::cout << "Invalid input." << std::endl;
                 continue;
@@ -121,7 +134,6 @@ void const CreateMenu(){
                 return;
             case 5:
                 exit_program();
-                exit(0);
             default:
                 std::cout << "Invalid input." << std::endl;
                 continue;
@@ -133,7 +145,9 @@ void const CreateMenu(){
 
 void const exit_program(){
     FlashcardManager::getInstance()->writeLibraryToStorage();
-    FlashcardManager::getInstance()->displayAllCards();
+    //  FlashcardManager::getInstance()->displayAllCards();
+    
+    delete FlashcardManager::getInstance();
     return;
 }
 
